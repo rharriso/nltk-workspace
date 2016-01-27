@@ -11,15 +11,12 @@ class ASOIFGenerator:
         self.words = wordlists.words()
 
         # get cfg tri and bigrams
-        self.trigrams = nltk.trigrams(self.words)
-        trigram_cond = [
-            (precede, word)
-            for precede in [t[0]+" "+t[1] for t in self.trigrams]
-            for word in [t[2] for t in self.trigrams]
-        ]
-        self.cfd_t = nltk.ConditionalFreqDist(self.trigrams)
-        self.bigrams = nltk.bigrams(self.words)
-        self.cfd_b = nltk.ConditionalFreqDist(self.bigrams)
+        trigrams = nltk.trigrams(self.words)
+        self.cfd_t = nltk.ConditionalFreqDist()
+        for t in list(trigrams):
+            self.cfd_t[t[0]+"|"+t[1]][t[2]] += 1
+        bigrams = nltk.bigrams(self.words)
+        self.cfd_b = nltk.ConditionalFreqDist(bigrams)
 
     #
     # use bigram only to generate
@@ -40,10 +37,10 @@ class ASOIFGenerator:
     # use trigram to generate
     #
     def generate_trigram(self, word0, word1, n=15):
-        sys.stdout.write(word0 + " ")
+        print(word0)
 
         for i in range(n):
-            sys.stdout.write(word1 + " ")
-            word2 = self.cfd_t[word0, word1].max()
+            print(word1)
+            word2 = self.cfd_t[word0+"|"+word1].max()
             word0 = word1
             word1 = word2
