@@ -64,3 +64,4 @@ target/
 .idea
 
 ASOIAF/*.*
+/text/stem-bello-gallico.txt
