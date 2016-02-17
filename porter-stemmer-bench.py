@@ -12,10 +12,8 @@ def test(tokens):
     stems = []
     print("call...")
     for i in range(0, 10):
-        stems = []
         print("loop...", i)
-        for t in tokens:
-            stems.append(p.stem(t))
+        stems = [p.stem(t) for t in tokens]
 
     return stems
 
